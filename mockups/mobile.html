@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>EscapeHub - Player Mobile App</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <style>
+            body {
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+            }
+            .view-content {
+                display: none;
+                height: calc(100% - 64px);
+                overflow-y: auto;
+            }
+            .view-content.active {
+                display: block;
+            }
+            /* Hide scrollbars for crisp mockup snapshots */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    </head>
+    <body
+        class="bg-slate-900 flex justify-center items-center min-h-screen p-0 sm:p-4"
+    >
+        <div
+            class="w-full max-w-[420px] h-[860px] bg-[#f8f9fc] text-gray-800 flex flex-col relative overflow-hidden sm:rounded-[36px] sm:shadow-2xl sm:border-8 sm:border-slate-800 select-none"
+        >
+            <div
+                id="view-home"
+                class="view-content active p-5 space-y-6 no-scrollbar"
+            >
+                <div class="pt-4">
+                    <h1
+                        class="text-3xl font-normal text-gray-900 tracking-tight"
+                    >
+                        EscapeHub
+                    </h1>
+                    <p class="text-gray-400 text-sm mt-0.5">Welcome back!</p>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="text-xl font-normal text-gray-800">
+                        Active Promotions
+                    </h3>
+                    <div class="space-y-3" id="home-promotions-list"></div>
+                </div>
+
+                <div class="space-y-3 pb-8">
+                    <h3 class="text-xl font-normal text-gray-800">
+                        Featured Rooms
+                    </h3>
+                    <div class="space-y-3" id="home-featured-list"></div>
+                </div>
+            </div>
+
+            <div
+                id="view-explore"
+                class="view-content p-5 space-y-4 no-scrollbar"
+            >
+                <div class="pt-4">
+                    <h1 class="text-2xl font-normal text-gray-900">
+                        Explore Rooms
+                    </h1>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button
+                        class="border border-gray-300 rounded-xl px-3 py-1.5 bg-white text-xs font-medium text-gray-700 flex items-center gap-1"
+                    >
+                        Highest Rated
+                        <i
+                            data-lucide="chevron-down"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </button>
+                    <button
+                        class="bg-[#f0f2f8] text-indigo-600 border border-gray-200 px-4 py-1.5 rounded-xl text-xs font-medium"
+                    >
+                        Apply
+                    </button>
+                </div>
+
+                <div class="space-y-2 py-1">
+                    <div class="text-xs text-gray-500 font-mono">
+                        Price: $70 - $140
+                    </div>
+                    <div class="relative w-full h-1 bg-gray-200 rounded">
+                        <div
+                            class="absolute left-1/3 right-0 h-full bg-indigo-600 rounded"
+                        ></div>
+                        <div
+                            class="absolute left-1/3 top-1/2 -translate-y-1/2 w-4 h-4 bg-indigo-600 border-2 border-white rounded-full shadow-sm"
+                        ></div>
+                        <div
+                            class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-indigo-600 border-2 border-white rounded-full shadow-sm"
+                        ></div>
+                    </div>
+                </div>
+
+                <div class="space-y-3 pb-8" id="explore-rooms-list"></div>
+            </div>
+
+            <div id="view-bookings" class="view-content space-y-0 no-scrollbar">
+                <div class="pt-6 pb-4 px-5 text-center">
+                    <h1 class="text-xl font-normal text-gray-900">
+                        My Bookings
+                    </h1>
+                </div>
+
+                <div
+                    class="flex border-b border-gray-200 text-center w-full bg-white"
+                >
+                    <div
+                        class="w-1/2 pb-2.5 text-xs font-semibold border-b-2 border-indigo-600 text-indigo-600 pt-1"
+                    >
+                        Upcoming
+                    </div>
+                    <div
+                        class="w-1/2 pb-2.5 text-xs font-medium text-gray-400 pt-1"
+                    >
+                        Past
+                    </div>
+                </div>
+
+                <div class="p-5 space-y-4" id="bookings-container">
+                    <div
+                        class="bg-white border border-gray-200 rounded-2xl p-4 space-y-3 shadow-sm"
+                    >
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span
+                                    class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold uppercase px-2 py-0.5 rounded-md tracking-wider"
+                                    >Confirmed</span
+                                >
+                                <h4
+                                    class="text-sm font-semibold text-gray-900 mt-2"
+                                >
+                                    The Deep Stone Crypt
+                                </h4>
+                            </div>
+                            <div
+                                class="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600"
+                            >
+                                <i data-lucide="calendar" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+
+                        <div
+                            class="text-[11px] font-mono text-gray-500 space-y-1 bg-[#f8f9fc] p-2.5 rounded-xl border border-gray-150"
+                        >
+                            <p class="flex justify-between">
+                                <span>Date:</span
+                                ><span class="text-gray-800 font-semibold"
+                                    >2026-07-15</span
+                                >
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Time Slot:</span
+                                ><span class="text-gray-800 font-semibold"
+                                    >13:30 to 15:00</span
+                                >
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Team Size:</span
+                                ><span class="text-gray-800 font-semibold"
+                                    >4 Players</span
+                                >
+                            </p>
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
+                            <button
+                                class="flex-1 bg-[#f1f3f9] hover:bg-gray-200 border border-gray-200 text-gray-700 py-2 rounded-xl text-xs font-medium"
+                            >
+                                Reschedule
+                            </button>
+                            <button
+                                class="flex-1 bg-white hover:bg-red-50 border border-gray-200 text-red-600 py-2 rounded-xl text-xs font-medium"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                id="view-rewards"
+                class="view-content p-5 space-y-5 no-scrollbar"
+            >
+                <div class="pt-4">
+                    <h1 class="text-2xl font-normal text-gray-900">Rewards</h1>
+                </div>
+
+                <div
+                    class="w-32 bg-[#f1f2f6] border border-gray-200 rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm"
+                >
+                    <i
+                        data-lucide="gift"
+                        class="w-9 h-9 text-amber-500 fill-amber-100 mb-1.5"
+                    ></i>
+                    <span class="text-4xl font-bold text-gray-900">230</span>
+                    <span class="text-[11px] text-gray-400 mt-1 font-medium"
+                        >Loyalty Points</span
+                    >
+                </div>
+
+                <div class="space-y-4 pt-1">
+                    <div
+                        class="border-b border-gray-200 pb-2 flex justify-between items-center text-md font-semibold text-gray-800"
+                    >
+                        <span>Available Rewards</span>
+                        <i
+                            data-lucide="chevron-down"
+                            class="w-4 h-4 text-gray-400"
+                        ></i>
+                    </div>
+
+                    <div class="space-y-2 pl-1">
+                        <div
+                            class="bg-white border border-gray-200 rounded-xl p-3 flex justify-between items-center text-xs shadow-sm"
+                        >
+                            <div>
+                                <p class="font-semibold text-gray-900">
+                                    Exotic Engram
+                                </p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">
+                                    Random 10-30% off discount
+                                </p>
+                            </div>
+                            <span
+                                class="text-indigo-600 font-mono font-bold bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-lg"
+                                >150 pts</span
+                            >
+                        </div>
+                        <div
+                            class="bg-white border border-gray-200 rounded-xl p-3 flex justify-between items-center text-xs shadow-sm"
+                        >
+                            <div>
+                                <p class="font-semibold text-gray-900">
+                                    Bright Dust Bundle
+                                </p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">
+                                    $10 flat system credit balance
+                                </p>
+                            </div>
+                            <span
+                                class="text-indigo-600 font-mono font-bold bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-lg"
+                                >80 pts</span
+                            >
+                        </div>
+                    </div>
+
+                    <div
+                        class="border-b border-gray-200 pb-2 pt-2 flex justify-between items-center text-md font-semibold text-gray-800"
+                    >
+                        <span>Transaction History</span>
+                        <i
+                            data-lucide="chevron-down"
+                            class="w-4 h-4 text-gray-400"
+                        ></i>
+                    </div>
+
+                    <div class="space-y-2 pl-1 font-mono text-[11px]">
+                        <div
+                            class="flex justify-between text-gray-600 bg-white border border-gray-150 p-2.5 rounded-xl shadow-sm"
+                        >
+                            <div>
+                                <p
+                                    class="font-sans font-semibold text-gray-800"
+                                >
+                                    Completed: Cauldron Lake
+                                </p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">
+                                    2026-06-15
+                                </p>
+                            </div>
+                            <span
+                                class="text-green-600 font-bold font-sans self-center"
+                                >+80 pts</span
+                            >
+                        </div>
+                        <div
+                            class="flex justify-between text-gray-600 bg-white border border-gray-150 p-2.5 rounded-xl shadow-sm"
+                        >
+                            <div>
+                                <p
+                                    class="font-sans font-semibold text-gray-800"
+                                >
+                                    Completed: Oh Deer Diner
+                                </p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">
+                                    2026-06-12
+                                </p>
+                            </div>
+                            <span
+                                class="text-green-600 font-bold font-sans self-center"
+                                >+150 pts</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-alerts" class="view-content space-y-0 no-scrollbar">
+                <div class="pt-6 pb-4 px-5">
+                    <h1 class="text-xl font-normal text-gray-900">
+                        Notifications
+                    </h1>
+                </div>
+                <div class="p-5 space-y-3" id="alerts-container">
+                    <div
+                        class="bg-white border border-gray-200 rounded-2xl p-3.5 flex items-start gap-3.5 shadow-sm"
+                    >
+                        <div
+                            class="w-8 h-8 rounded-xl border border-blue-100 bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"
+                        >
+                            <i data-lucide="ticket" class="w-4 h-4"></i>
+                        </div>
+                        <div class="text-xs">
+                            <div class="flex justify-between items-baseline">
+                                <h4 class="font-bold text-gray-900">
+                                    Booking Confirmed
+                                </h4>
+                            </div>
+                            <p class="text-gray-500 mt-0.5 leading-relaxed">
+                                Your session slot for The Deep Stone Crypt is
+                                locked in for July 15.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                id="view-profile"
+                class="view-content p-5 space-y-6 no-scrollbar"
+            >
+                <div class="flex flex-col items-center text-center pt-4">
+                    <div
+                        class="w-20 h-20 rounded-full bg-indigo-100 border border-indigo-200 relative flex items-center justify-center text-gray-600"
+                    >
+                        <i
+                            data-lucide="user"
+                            class="w-10 h-10 text-indigo-500"
+                        ></i>
+                        <div
+                            class="absolute bottom-0 right-0 w-6 h-6 bg-blue-500 border-2 border-white rounded-full flex items-center justify-center text-white cursor-pointer"
+                        >
+                            <i data-lucide="camera" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                    <h2 class="text-lg font-normal text-gray-900 mt-2.5">
+                        Ikora Rey
+                    </h2>
+                    <p class="text-xs text-gray-400 font-mono">
+                        ikora@hidden.net
+                    </p>
+                    <p class="text-xs text-gray-400">Mostar</p>
+                </div>
+
+                <div
+                    class="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100 overflow-hidden shadow-sm text-xs md:text-sm"
+                >
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <i
+                                data-lucide="contact"
+                                class="w-4 h-4 text-gray-400"
+                            ></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400">Name</p>
+                                <p class="text-gray-900 font-normal mt-0.5">
+                                    Ikora Rey
+                                </p>
+                            </div>
+                        </div>
+                        <i
+                            data-lucide="pencil"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </div>
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <i
+                                data-lucide="mail"
+                                class="w-4 h-4 text-gray-400"
+                            ></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400">Email</p>
+                                <p class="text-gray-900 font-mono mt-0.5">
+                                    ikora@hidden.net
+                                </p>
+                            </div>
+                        </div>
+                        <i
+                            data-lucide="pencil"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </div>
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <i
+                                data-lucide="phone"
+                                class="w-4 h-4 text-gray-400"
+                            ></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400">Phone</p>
+                                <p class="text-gray-400 font-normal mt-0.5">
+                                    Not set
+                                </p>
+                            </div>
+                        </div>
+                        <i
+                            data-lucide="pencil"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </div>
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <i
+                                data-lucide="building"
+                                class="w-4 h-4 text-gray-400"
+                            ></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400">City</p>
+                                <p class="text-gray-900 font-normal mt-0.5">
+                                    Mostar
+                                </p>
+                            </div>
+                        </div>
+                        <i
+                            data-lucide="pencil"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </div>
+                    <div class="p-3 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <i
+                                data-lucide="flag"
+                                class="w-4 h-4 text-gray-400"
+                            ></i>
+                            <div>
+                                <p class="text-[10px] text-gray-400">Country</p>
+                                <p class="text-gray-400 font-normal mt-0.5">
+                                    Select country
+                                </p>
+                            </div>
+                        </div>
+                        <i
+                            data-lucide="pencil"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </div>
+                    <div
+                        class="p-3 flex justify-between items-center cursor-pointer hover:bg-gray-50"
+                    >
+                        <div class="flex items-center gap-3">
+                            <i
+                                data-lucide="lock"
+                                class="w-4 h-4 text-gray-400"
+                            ></i
+                            ><span class="text-gray-900 font-normal"
+                                >Change Password</span
+                            >
+                        </div>
+                        <i
+                            data-lucide="chevron-right"
+                            class="w-3.5 h-3.5 text-gray-400"
+                        ></i>
+                    </div>
+                </div>
+
+                <button
+                    class="w-full border border-gray-300 bg-white hover:bg-gray-50 rounded-xl py-2 text-xs font-medium text-gray-700 flex items-center justify-center gap-2 transition shadow-sm"
+                >
+                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
+                </button>
+            </div>
+
+            <div
+                id="view-room-detail"
+                class="absolute inset-0 bg-[#f8f9fc] z-50 p-0 hidden flex flex-col overflow-y-auto no-scrollbar"
+            >
+                <div
+                    class="p-4 flex items-center gap-3 bg-white border-b border-gray-200 shrink-0"
+                >
+                    <button
+                        onclick="closeRoomDetails()"
+                        class="text-gray-707 p-1 hover:bg-gray-100 rounded-lg transition"
+                    >
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <h2
+                        class="text-md font-normal text-gray-800"
+                        id="detail-nav-title"
+                    >
+                        The Whisper
+                    </h2>
+                </div>
+
+                <div class="p-5 space-y-4 pb-12">
+                    <div
+                        class="w-full h-44 bg-gradient-to-br from-slate-800 to-indigo-900 rounded-2xl overflow-hidden relative shadow-inner"
+                    >
+                        <img
+                            id="detail-banner-img"
+                            class="w-full h-full object-cover mix-blend-overlay opacity-90"
+                            src=""
+                            alt="Banner image template asset"
+                        />
+                    </div>
+
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3
+                                class="text-2xl font-bold text-gray-900 tracking-tight"
+                                id="detail-title"
+                            >
+                                The Whisper
+                            </h3>
+                            <div
+                                class="flex flex-wrap gap-1 mt-1.5 text-[10px] font-medium text-gray-500"
+                            >
+                                <span
+                                    class="bg-white border border-gray-200 px-2.5 py-0.5 rounded-md"
+                                    id="detail-tag-1"
+                                    >Mystery</span
+                                >
+                                <span
+                                    class="bg-white border border-gray-200 px-2.5 py-0.5 rounded-md"
+                                    id="detail-tag-2"
+                                    >Expert</span
+                                >
+                                <span
+                                    class="bg-white border border-gray-200 px-2.5 py-0.5 rounded-md"
+                                    >14++</span
+                                >
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center gap-0.5 text-xs font-semibold text-gray-900 bg-white border border-gray-100 px-2 py-1 rounded-xl shadow-sm mt-0.5"
+                        >
+                            <i
+                                data-lucide="star"
+                                class="w-3.5 h-3.5 text-gray-800 fill-gray-800"
+                            ></i>
+                            <span id="detail-rating-label">4.0 (1)</span>
+                        </div>
+                    </div>
+
+                    <p
+                        class="text-xs text-gray-400 leading-relaxed italic"
+                        id="detail-description"
+                    >
+                        A Taken blight grows in the European Dead Zone
+                    </p>
+
+                    <div
+                        class="grid grid-cols-3 text-center py-2.5 bg-white border border-gray-100 rounded-xl shadow-sm text-[11px] font-medium text-gray-700"
+                    >
+                        <div
+                            class="flex flex-col items-center border-r border-gray-100"
+                        >
+                            <i
+                                data-lucide="users"
+                                class="w-4 h-4 text-gray-400 mb-1"
+                            ></i
+                            ><span id="detail-players-label">2-4 players</span>
+                        </div>
+                        <div
+                            class="flex flex-col items-center border-r border-gray-100"
+                        >
+                            <i
+                                data-lucide="clock"
+                                class="w-4 h-4 text-gray-400 mb-1"
+                            ></i
+                            ><span>45 min</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i
+                                data-lucide="dollar-sign"
+                                class="w-4 h-4 text-gray-400 mb-1"
+                            ></i
+                            ><span id="detail-price-label">$100</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-1">
+                        <h4
+                            class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+                        >
+                            Select Date & Time
+                        </h4>
+                        <div
+                            class="border border-gray-300 rounded-xl p-3 bg-white flex items-center gap-2 text-xs font-mono font-medium text-indigo-600"
+                        >
+                            <i
+                                data-lucide="calendar"
+                                class="w-4 h-4 text-indigo-500"
+                            ></i>
+                            2026-07-02
+                        </div>
+                        <button
+                            class="w-full text-center text-xs text-indigo-600 font-medium py-1 hover:underline"
+                        >
+                            Check availability
+                        </button>
+                    </div>
+
+                    <div class="space-y-2 pt-2">
+                        <div
+                            class="flex justify-between text-[10px] font-bold text-gray-400 uppercase tracking-wide"
+                        >
+                            <span>Reviews (1)</span>
+                        </div>
+                        <div
+                            class="bg-[#f1f3f9] border border-gray-200 rounded-xl p-3 space-y-1.5"
+                        >
+                            <div class="flex text-gray-800">
+                                <i
+                                    data-lucide="star"
+                                    class="w-3 h-3 fill-gray-800"
+                                ></i
+                                ><i
+                                    data-lucide="star"
+                                    class="w-3 h-3 fill-gray-800"
+                                ></i
+                                ><i
+                                    data-lucide="star"
+                                    class="w-3 h-3 fill-gray-800"
+                                ></i
+                                ><i
+                                    data-lucide="star"
+                                    class="w-3 h-3 fill-gray-800"
+                                ></i
+                                ><i
+                                    data-lucide="star"
+                                    class="w-3 h-3 text-gray-300"
+                                ></i>
+                            </div>
+                            <p
+                                class="text-xs text-gray-600 leading-relaxed font-normal"
+                                id="detail-review-text"
+                            >
+                                Saga Anderson: Strange signals, strange lights.
+                                The FBI has questions. So do I.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav
+                class="bg-white border-t border-gray-200 h-16 flex items-center justify-around px-1 shrink-0 z-40 relative"
+                id="bottom-tabs-container"
+            ></nav>
+        </div>
+
+        <script>
+            const promotions = [
+                {
+                    title: "Gambit Prime",
+                    desc: "20% off - 20% off any booking — bank those savings, brother.",
+                },
+                {
+                    title: "The Clicker",
+                    desc: "10% off - $10 off — use the light.",
+                },
+                {
+                    title: "Whether We Wanted It Or Not",
+                    desc: "15% off - 15% off all rooms — we've stepped into a war with pricing.",
+                },
+            ];
+
+            const rooms = [
+                {
+                    id: "dsc",
+                    title: "The Deep Stone Crypt",
+                    type: "Sci-Fi",
+                    diff: "Hard",
+                    players: "3-6 players",
+                    price: "$140",
+                    rate: "5.0",
+                    isIcon: true,
+                    img: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=400&q=80",
+                    desc: "A frozen vault holds dark secrets beneath the ice of Europa. Stop the resurrection routine.",
+                    rev: "Commander Zavala: Outstanding tactical synchronization simulated successfully.",
+                },
+                {
+                    id: "whsp",
+                    title: "The Whisper",
+                    type: "Mystery",
+                    diff: "Expert",
+                    players: "2-4 players",
+                    price: "$100",
+                    rate: "4.0",
+                    isIcon: false,
+                    img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=400&q=80",
+                    desc: "A Taken blight grows in the European Dead Zone. Can you solve the anomaly inside the anomaly?",
+                    rev: "Saga Anderson: Strange signals, strange lights. The FBI has questions. So do I.",
+                },
+                {
+                    id: "st",
+                    title: "Shattered Throne",
+                    type: "Fantasy",
+                    diff: "Medium",
+                    players: "3-6 players",
+                    price: "$130",
+                    rate: "5.0",
+                    isIcon: false,
+                    img: "https://static.wikia.nocookie.net/destinypedia/images/9/98/Shattered_Throne.jpg/revision/latest/scale-to-width-down/1200?cb=20250309004757",
+                    desc: "Enter the ascendant realm layout structure inside the Dreaming City grid and lift the curse loop.",
+                    rev: "Cayde 6: The Dreaming City is gorgeous. Almost got lost on purpose. Almost.",
+                },
+                {
+                    id: "cl",
+                    title: "Cauldron Lake",
+                    type: "Mystery",
+                    diff: "Medium",
+                    players: "2-5 players",
+                    price: "$110",
+                    rate: "5.0",
+                    isIcon: false,
+                    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=400&q=80",
+                    desc: "Shift through the shadows around the lake. The pages of the manuscript are writing your escape route.",
+                    rev: "Saga Anderson: Small town, big secrets. The Dark Place is real and it's terrifying.",
+                },
+                {
+                    id: "bf",
+                    title: "Bright Falls: Writer's Block",
+                    type: "Horror",
+                    diff: "Hard",
+                    players: "3-5 players",
+                    price: "$120",
+                    rate: "4.0",
+                    isIcon: false,
+                    img: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=400&q=80",
+                    desc: "Trapped inside a dark office grid framework model system panel interface. Can you break the cycle?",
+                    rev: "Alan Wake: It felt like something I've written before. Deja vu is strong here.",
+                },
+                {
+                    id: "odd",
+                    title: "Oh Deer Diner",
+                    type: "Adventure",
+                    diff: "Easy",
+                    players: "2-4 players",
+                    price: "$70",
+                    rate: "5.0",
+                    isIcon: false,
+                    img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80",
+                    desc: "Sit down for coffee, but don't look too closely into the back freezer door matrix locker system.",
+                    rev: "The Drifter: Best cup of coffee in Bright Falls. The Taken infestation was a bonus.",
+                },
+            ];
+
+            const mobileTabs = [
+                { id: "home", icon: "home", label: "Home" },
+                { id: "explore", icon: "compass", label: "Explore" },
+                { id: "bookings", icon: "ticket", label: "Bookings" },
+                { id: "rewards", icon: "gift", label: "Rewards" },
+                { id: "alerts", icon: "bell", label: "Alerts" },
+                { id: "profile", icon: "user", label: "Profile" },
+            ];
+
+            function switchMobileView(targetViewId) {
+                document
+                    .querySelectorAll(".view-content")
+                    .forEach((view) => view.classList.remove("active"));
+                closeRoomDetails();
+
+                const activeView = document.getElementById(
+                    `view-${targetViewId}`,
+                );
+                if (activeView) activeView.classList.add("active");
+
+                renderMobileTabsRow(targetViewId);
+                lucide.createIcons();
+            }
+
+            function renderMobileTabsRow(activeId) {
+                document.getElementById("bottom-tabs-container").innerHTML =
+                    mobileTabs
+                        .map((t) => {
+                            const isSelected = t.id === activeId;
+                            return `
+                <button onclick="switchMobileView('${t.id}')" class="flex flex-col items-center justify-center w-14 py-1 transition duration-150">
+                    <div class="px-3.5 py-1 rounded-full ${isSelected ? "bg-[#e0e2f5] text-[#4f46e5]" : "text-gray-400"}">
+                        <i data-lucide="${t.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-[9px] font-medium mt-1 tracking-tight ${isSelected ? "text-gray-900 font-semibold" : "text-gray-400"}">${t.label}</span>
+                </button>`;
+                        })
+                        .join("");
+            }
+
+            function openRoomDetails(roomId) {
+                const item = rooms.find((r) => r.id === roomId);
+                if (!item) return;
+
+                document.getElementById("detail-nav-title").innerText =
+                    item.title;
+                document.getElementById("detail-title").innerText = item.title;
+                document.getElementById("detail-banner-img").src = item.img;
+                document.getElementById("detail-tag-1").innerText = item.type;
+                document.getElementById("detail-tag-2").innerText = item.diff;
+                document.getElementById("detail-rating-label").innerText =
+                    `${item.rate} (1)`;
+                document.getElementById("detail-description").innerText =
+                    item.desc;
+                document.getElementById("detail-players-label").innerText =
+                    item.players;
+                document.getElementById("detail-price-label").innerText =
+                    item.price;
+                document.getElementById("detail-review-text").innerText =
+                    item.rev;
+
+                document
+                    .getElementById("view-room-detail")
+                    .classList.remove("hidden");
+                lucide.createIcons();
+            }
+
+            function closeRoomDetails() {
+                document
+                    .getElementById("view-room-detail")
+                    .classList.add("hidden");
+            }
+
+            // Populate Home Views
+            document.getElementById("home-promotions-list").innerHTML =
+                promotions
+                    .map(
+                        (p) => `
+            <div class="bg-white border border-gray-200 rounded-2xl p-4 flex items-start gap-3 shadow-sm">
+                <i data-lucide="tag" class="w-5 h-5 text-amber-500 fill-amber-100 mt-0.5 shrink-0"></i>
+                <div><h4 class="text-sm font-semibold text-gray-900">${p.title}</h4><p class="text-xs text-gray-500 mt-0.5 leading-relaxed">${p.desc}</p></div>
+            </div>`,
+                    )
+                    .join("");
+
+            document.getElementById("home-featured-list").innerHTML = rooms
+                .slice(0, 5)
+                .map(
+                    (r) => `
+            <div onclick="openRoomDetails('${r.id}')" class="bg-white border border-gray-200 rounded-2xl p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition shadow-sm">
+                <div class="flex items-center gap-3">
+                    ${
+                        r.isIcon
+                            ? `<div class="w-11 h-11 bg-indigo-50 border border-gray-100 text-indigo-500 flex items-center justify-center rounded-xl"><i data-lucide="door-open" class="w-5 h-5"></i></div>`
+                            : `<div class="w-11 h-11 rounded-xl overflow-hidden bg-gray-100 border border-gray-100"><img class="w-full h-full object-cover" src="${r.img}" alt="Thumbnail"></div>`
+                    }
+                    <div><h4 class="text-xs font-bold text-gray-900">${r.title}</h4><p class="text-[10px] text-gray-400 mt-0.5">${r.type} - ${r.diff} | ${r.players}</p></div>
+                </div>
+                <div class="text-xs font-semibold text-gray-600 pr-1">${r.price}</div>
+            </div>`,
+                )
+                .join("");
+
+            // Populate Explore Views List Stack
+            document.getElementById("explore-rooms-list").innerHTML = rooms
+                .map(
+                    (r) => `
+            <div onclick="openRoomDetails('${r.id}')" class="bg-white border border-gray-200 rounded-2xl p-3 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition shadow-sm">
+                <div class="flex items-center gap-3">
+                    ${
+                        r.isIcon
+                            ? `<div class="w-11 h-11 bg-indigo-50 border border-gray-100 text-indigo-500 flex items-center justify-center rounded-xl"><i data-lucide="door-open" class="w-5 h-5"></i></div>`
+                            : `<div class="w-11 h-11 rounded-xl overflow-hidden bg-gray-100 border border-gray-100"><img class="w-full h-full object-cover" src="${r.img}" alt="Thumbnail"></div>`
+                    }
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-900">${r.title}</h4>
+                        <div class="flex items-center gap-2 mt-0.5 text-[10px] text-gray-400">
+                            <span>${r.type} - ${r.diff} | ${r.players}</span>
+                            <span class="flex items-center gap-0.5 text-gray-700 font-medium"><i data-lucide="star" class="w-2.5 h-2.5 fill-gray-800 text-gray-800"></i> ${r.rate}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-xs font-semibold text-gray-600 pr-1">${r.price}</div>
+            </div>`,
+                )
+                .join("");
+
+            switchMobileView("home");
+        </script>
+    </body>
+</html>
