@@ -2,6 +2,8 @@
 
 Seminar project for Razvoj softvera II. A booking system for an escape room business: ASP.NET Core 8 API, a RabbitMQ worker, a Flutter desktop app for staff and a Flutter mobile app for clients.
 
+Note: This was fully developed on Fedora, and it ran in a base Windows VM. Did not test out the iOS app.
+
 ## Setup
 
 You need Docker (or Podman), the .NET 8 SDK and Flutter 3.47.
