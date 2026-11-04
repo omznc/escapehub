@@ -18,10 +18,11 @@ public class BookingWorkflowService
     private readonly SettingsService _settings;
     private readonly IEventPublisher _events;
     private readonly BusinessClock _clock;
+    private readonly PaymentService _payments;
     private readonly ILogger<BookingWorkflowService> _logger;
 
     public BookingWorkflowService(AppDbContext db, ICurrentUser currentUser, RoomAccess access, SettingsService settings,
-        IEventPublisher events, BusinessClock clock, ILogger<BookingWorkflowService> logger)
+        IEventPublisher events, BusinessClock clock, PaymentService payments, ILogger<BookingWorkflowService> logger)
     {
         _db = db;
         _currentUser = currentUser;
@@ -29,6 +30,7 @@ public class BookingWorkflowService
         _settings = settings;
         _events = events;
         _clock = clock;
+        _payments = payments;
         _logger = logger;
     }
 
@@ -54,6 +56,7 @@ public class BookingWorkflowService
         if (!canCancel)
             throw new ConflictException(reason!);
 
+        await _payments.RefundAsync(booking);
         ReleaseVoucher(booking);
         await ChangeStatusAsync(booking, BookingStatusEnum.Cancelled, request.Reason);
     }

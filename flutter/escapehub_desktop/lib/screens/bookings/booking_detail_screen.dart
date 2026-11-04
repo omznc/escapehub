@@ -68,10 +68,15 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
   }
 
   Future<void> _cancel(BookingDto booking) async {
+    final paidAmount = booking.paidAmount;
+    final refund = booking.isPaid && paidAmount != null
+        ? ' The client gets a refund of ${formatMoney(paidAmount)} through Polar.'
+        : '';
     final reason = await showReasonDialog(
       context,
       title: 'Cancel the booking',
-      message: 'Do you want to cancel ${_describe(booking)}? The client sees the reason. You cannot undo this action.',
+      message:
+          'Do you want to cancel ${_describe(booking)}? The client sees the reason.$refund You cannot undo this action.',
       confirmLabel: 'Cancel the booking',
     );
     if (reason == null || !mounted) return;
@@ -305,16 +310,7 @@ class _PriceColumn extends StatelessWidget {
                 value: formatMoney(booking.discountApplied),
               ),
               InfoRow(icon: Icons.payments_outlined, label: 'Total', value: formatMoney(booking.totalPrice)),
-              InfoRow(
-                icon: Icons.check_circle_outline,
-                label: 'Payment',
-                value: booking.isPaid
-                    ? [
-                        if (booking.paidAmount case final amount?) formatMoney(amount),
-                        if (booking.paidAt case final paidAt?) formatTimestamp(paidAt),
-                      ].join(' on ')
-                    : 'Not paid',
-              ),
+              InfoRow(icon: Icons.check_circle_outline, label: 'Payment', value: _paymentText(booking)),
               InfoRow(icon: Icons.loyalty_outlined, label: 'Points earned', value: '${booking.pointsEarned}'),
             ],
           ),
@@ -382,4 +378,19 @@ class _StatusHistory extends StatelessWidget {
       ],
     );
   }
+}
+
+String _paymentText(BookingDto booking) {
+  if (booking.refundedAt case final refundedAt?) {
+    return [
+      'Refunded',
+      if (booking.refundedAmount case final amount?) formatMoney(amount),
+      'on ${formatTimestamp(refundedAt)}',
+    ].join(' ');
+  }
+  if (!booking.isPaid) return 'Not paid';
+  return [
+    if (booking.paidAmount case final amount?) formatMoney(amount),
+    if (booking.paidAt case final paidAt?) formatTimestamp(paidAt),
+  ].join(' on ');
 }

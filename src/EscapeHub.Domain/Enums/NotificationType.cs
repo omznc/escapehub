@@ -12,5 +12,6 @@ public enum NotificationType
     BookingCompleted = 8,
     ResultRecorded = 9,
     BookingNoShow = 10,
-    PaymentReceived = 11
+    PaymentReceived = 11,
+    PaymentRefunded = 12
 }

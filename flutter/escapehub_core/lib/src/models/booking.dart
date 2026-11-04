@@ -64,6 +64,8 @@ class BookingDto extends BookingListItemDto {
       paymentStatus = json['paymentStatus'] as String?,
       paidAt = readTimestampOrNull(json['paidAt']),
       paidAmount = readDecimalOrNull(json['paidAmount']),
+      refundedAt = readTimestampOrNull(json['refundedAt']),
+      refundedAmount = readDecimalOrNull(json['refundedAmount']),
       canPay = json['canPay'] as bool? ?? false,
       payBlockedReason = json['payBlockedReason'] as String?,
       allowedActions = {for (final action in readStrings(json['allowedActions'])) BookingAction.parse(action)},
@@ -89,6 +91,8 @@ class BookingDto extends BookingListItemDto {
   final String? paymentStatus;
   final DateTime? paidAt;
   final double? paidAmount;
+  final DateTime? refundedAt;
+  final double? refundedAmount;
   final bool canPay;
   final String? payBlockedReason;
   final Set<BookingAction> allowedActions;

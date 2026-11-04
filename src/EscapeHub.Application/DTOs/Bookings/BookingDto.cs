@@ -46,6 +46,8 @@ public class BookingDto : BookingListItemDto
     public string? PaymentStatus { get; set; }
     public DateTime? PaidAt { get; set; }
     public decimal? PaidAmount { get; set; }
+    public DateTime? RefundedAt { get; set; }
+    public decimal? RefundedAmount { get; set; }
     public bool CanPay { get; set; }
     public string? PayBlockedReason { get; set; }
     public List<string> AllowedActions { get; set; } = new();

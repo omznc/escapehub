@@ -64,15 +64,41 @@ class PriceCard extends StatelessWidget {
         const Divider(),
         InfoRow(icon: Icons.payments_outlined, label: 'Total', value: formatMoney(booking.totalPrice)),
         if (booking.isPaid)
-          InfoRow(
+          _PaymentRow(
             icon: Icons.check_circle_outline,
             label: 'Paid',
-            value: [
-              if (booking.paidAmount case final amount?) formatMoney(amount),
-              if (booking.paidAt case final paidAt?) formatTimestamp(paidAt),
-            ].join(' · '),
+            amount: booking.paidAmount,
+            date: booking.paidAt,
+          ),
+        if (booking.refundedAt != null)
+          _PaymentRow(
+            icon: Icons.currency_exchange,
+            label: 'Refunded',
+            amount: booking.refundedAmount,
+            date: booking.refundedAt,
           ),
       ],
+    );
+  }
+}
+
+class _PaymentRow extends StatelessWidget {
+  const _PaymentRow({required this.icon, required this.label, required this.amount, required this.date});
+
+  final IconData icon;
+  final String label;
+  final double? amount;
+  final DateTime? date;
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoRow(
+      icon: icon,
+      label: label,
+      value: [
+        if (amount case final amount?) formatMoney(amount),
+        if (date case final date?) formatTimestamp(date),
+      ].join(' · '),
     );
   }
 }

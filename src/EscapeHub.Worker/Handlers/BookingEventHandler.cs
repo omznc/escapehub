@@ -105,6 +105,14 @@ public class BookingEventHandler
         await _notifier.NotifyAsync(notifications);
     }
 
+    public async Task HandleAsync(PaymentRefundedEvent message)
+    {
+        var booking = await LoadAsync(message.BookingId);
+        var amount = message.Amount.ToString("0.00", CultureInfo.InvariantCulture);
+        await _notifier.NotifyAsync(booking.Client, new NotificationMessage(NotificationType.PaymentRefunded, "Refund sent",
+            $"We refunded {amount} KM for {BookingMapper.Describe(booking)}."));
+    }
+
     public async Task HandleAsync(SessionReminderEvent message)
     {
         var booking = await LoadAsync(message.BookingId);

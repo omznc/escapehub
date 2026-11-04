@@ -19,6 +19,7 @@ public static class BookingMapper
         var status = BookingStateMachine.StatusOf(b);
         var payment = b.Payments.MaxBy(p => p.Id);
         var paid = b.Payments.FirstOrDefault(p => p.Status == PaymentStatus.Succeeded);
+        var refunded = b.Payments.FirstOrDefault(p => p.Status == PaymentStatus.Refunded);
         var payProblem = PaymentRules.Problem(b, now);
         return new BookingDto
         {
@@ -53,6 +54,8 @@ public static class BookingMapper
             PaymentStatus = payment?.Status.ToString(),
             PaidAt = paid?.PaidAt,
             PaidAmount = paid?.Amount,
+            RefundedAt = refunded?.RefundedAt,
+            RefundedAmount = refunded?.Amount,
             CanPay = user.IsClient && payProblem == null,
             PayBlockedReason = user.IsClient ? payProblem : null,
             Result = b.RoomResult == null ? null : new RoomResultDto

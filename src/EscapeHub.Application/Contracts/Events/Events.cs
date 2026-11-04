@@ -18,3 +18,5 @@ public record PasswordResetRequestedEvent(int UserId, string Email, string Code,
 }
 
 public record PaymentCompletedEvent(int BookingId, int ClientId, decimal Amount);
+
+public record PaymentRefundedEvent(int BookingId, int ClientId, decimal Amount);

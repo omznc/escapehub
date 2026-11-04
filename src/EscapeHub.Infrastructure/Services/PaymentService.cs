@@ -74,6 +74,47 @@ public class PaymentService
         return payment.Status == PaymentStatus.Succeeded;
     }
 
+    public async Task RefundAsync(Booking booking)
+    {
+        if (booking.Payments.FirstOrDefault(p => p.Status == PaymentStatus.Succeeded) is not { } payment) return;
+
+        var refund = await RequestRefundAsync(booking.Id, payment);
+        var refundId = refund?.Id;
+        var now = DateTime.UtcNow;
+        var changed = await _db.Payments
+            .Where(p => p.Id == payment.Id && p.Status == PaymentStatus.Succeeded)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(p => p.Status, PaymentStatus.Refunded)
+                .SetProperty(p => p.RefundId, refundId)
+                .SetProperty(p => p.RefundedAt, now)
+                .SetProperty(p => p.UpdatedAt, now));
+        await _db.Entry(payment).ReloadAsync();
+        if (changed != 1) return;
+
+        _events.Publish(EventQueues.PaymentRefunded, new PaymentRefundedEvent(booking.Id, booking.ClientId, payment.Amount));
+    }
+
+    private async Task<PolarRefund?> RequestRefundAsync(int bookingId, Payment payment)
+    {
+        PolarRefund? refund;
+        try
+        {
+            var orderId = payment.OrderId ?? await _polar.GetOrderIdAsync(payment.CheckoutId)
+                ?? throw new HttpRequestException("The order of the payment is not found.");
+            var order = await _polar.GetOrderAsync(orderId);
+            refund = order.RefundableAmount + order.RefundableTaxAmount > 0
+                ? await _polar.CreateRefundAsync(orderId, order.RefundableAmount, order.RefundableTaxAmount, $"Booking {bookingId} cancelled")
+                : null;
+        }
+        catch (HttpRequestException)
+        {
+            throw new BusinessException("The refund failed. Try again later.");
+        }
+        if (refund is { Status: "failed" or "canceled" })
+            throw new BusinessException("The refund failed. Try again later.");
+        return refund;
+    }
+
     private async Task<Booking> LoadAsync(int bookingId) =>
         await _db.Bookings
             .Include(b => b.Schedule).ThenInclude(s => s.Room)

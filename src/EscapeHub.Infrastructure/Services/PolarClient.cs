@@ -7,6 +7,10 @@ namespace EscapeHub.Infrastructure.Services;
 
 public record PolarCheckout(string Id, string Url, string Status, long? TotalAmount, string? Currency, Dictionary<string, string>? Metadata);
 
+public record PolarOrder(string Id, long RefundableAmount, long RefundableTaxAmount);
+
+public record PolarRefund(string Id, string Status);
+
 public class PolarClient
 {
     private const decimal BamPerEur = 1.95583m;
@@ -57,6 +61,17 @@ public class PolarClient
     {
         var orders = await _http.GetFromJsonAsync<OrderList>($"v1/orders/?checkout_id={checkoutId}", Json);
         return orders?.Items.FirstOrDefault()?.Id;
+    }
+
+    public async Task<PolarOrder> GetOrderAsync(string orderId) =>
+        (await _http.GetFromJsonAsync<PolarOrder>($"v1/orders/{orderId}", Json))!;
+
+    public async Task<PolarRefund> CreateRefundAsync(string orderId, long cents, long taxCents, string comment)
+    {
+        var body = new { order_id = orderId, reason = "customer_request", amount = cents, tax_amount = taxCents, comment };
+        var response = await _http.PostAsJsonAsync("v1/refunds/", body);
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<PolarRefund>(Json))!;
     }
 
     private record OrderList(List<OrderItem> Items);

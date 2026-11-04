@@ -14,4 +14,6 @@ public class Payment : BaseEntity
     public string Currency { get; set; } = "BAM";
     public string? OrderId { get; set; }
     public DateTime? PaidAt { get; set; }
+    public string? RefundId { get; set; }
+    public DateTime? RefundedAt { get; set; }
 }

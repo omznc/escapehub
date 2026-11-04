@@ -13,6 +13,7 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(p => p.Amount).HasColumnType("decimal(10,2)");
         builder.Property(p => p.Currency).HasMaxLength(3).IsRequired();
         builder.Property(p => p.OrderId).HasMaxLength(100);
+        builder.Property(p => p.RefundId).HasMaxLength(100);
         builder.HasIndex(p => p.CheckoutId).IsUnique();
         builder.HasIndex(p => p.BookingId).IsUnique().HasFilter("[Status] IN (1, 2)");
 

@@ -5,5 +5,6 @@ public enum PaymentStatus
     Open = 1,
     Succeeded = 2,
     Expired = 3,
-    Failed = 4
+    Failed = 4,
+    Refunded = 5
 }
