@@ -9,11 +9,13 @@ public static class EventQueues
     public const string RewardRedeemed = "reward.redeemed";
     public const string SessionReminder = "session.reminder";
     public const string PasswordResetRequested = "password.reset-requested";
+    public const string PaymentCompleted = "payment.completed";
     public const string DeadLetter = "escapehub.dead-letter";
 
     public static readonly string[] All =
     [
         BookingCreated, BookingStatusChanged, BookingCompleted, ResultRecorded,
-        RewardRedeemed, SessionReminder, PasswordResetRequested
+        RewardRedeemed, SessionReminder, PasswordResetRequested,
+        PaymentCompleted
     ];
 }

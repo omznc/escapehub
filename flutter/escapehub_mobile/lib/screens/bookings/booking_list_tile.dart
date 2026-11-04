@@ -38,7 +38,8 @@ class BookingListTile extends StatelessWidget {
                     Text(booking.roomName, style: theme.textTheme.titleMedium),
                     Text('${formatDay(booking.date)}, ${booking.startTime}', style: theme.textTheme.bodySmall),
                     Text(
-                      '${formatPlayerCount(booking.playerCount)} · ${formatMoney(booking.totalPrice)}',
+                      '${formatPlayerCount(booking.playerCount)} · ${formatMoney(booking.totalPrice)}'
+                      '${booking.isPaid ? ' · Paid' : ''}',
                       style: theme.textTheme.bodySmall,
                     ),
                     const SizedBox(height: 6),

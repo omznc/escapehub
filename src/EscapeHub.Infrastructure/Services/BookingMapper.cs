@@ -17,6 +17,9 @@ public static class BookingMapper
     {
         var (canCancel, cancelReason) = CancelState(b, user, cancellationDeadlineHours, now);
         var status = BookingStateMachine.StatusOf(b);
+        var payment = b.Payments.MaxBy(p => p.Id);
+        var paid = b.Payments.FirstOrDefault(p => p.Status == PaymentStatus.Succeeded);
+        var payProblem = PaymentRules.Problem(b, now);
         return new BookingDto
         {
             Id = b.Id,
@@ -46,6 +49,12 @@ public static class BookingMapper
             Notes = b.Notes,
             ParticipantNames = b.BookingMembers.OrderBy(m => m.Id).Select(m => m.ParticipantName).ToList(),
             HasResult = b.RoomResult != null,
+            IsPaid = paid != null,
+            PaymentStatus = payment?.Status.ToString(),
+            PaidAt = paid?.PaidAt,
+            PaidAmount = paid?.Amount,
+            CanPay = user.IsClient && payProblem == null,
+            PayBlockedReason = user.IsClient ? payProblem : null,
             Result = b.RoomResult == null ? null : new RoomResultDto
             {
                 Escaped = b.RoomResult.Escaped,
@@ -79,6 +88,8 @@ public static class BookingMapper
         var status = BookingStateMachine.StatusOf(booking);
         if (!BookingStateMachine.CanMove(status, BookingStatusEnum.Cancelled))
             return (false, $"A {BookingStateMachine.Describe(status)} booking cannot be cancelled.");
+        if (user.IsClient && booking.Payments.Any(p => p.Status == PaymentStatus.Succeeded))
+            return (false, "This booking is paid. Contact us to cancel it.");
         if (user.IsClient && booking.Schedule.StartsAt.AddHours(-deadlineHours) <= now)
             return (false, $"Bookings can be cancelled only up to {deadlineHours} hours before the session.");
         return (true, null);

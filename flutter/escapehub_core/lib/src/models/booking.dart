@@ -20,6 +20,7 @@ class BookingListItemDto {
       playerCount = json['playerCount'] as int,
       totalPrice = readDecimal(json['totalPrice']),
       hasResult = json['hasResult'] as bool,
+      isPaid = json['isPaid'] as bool? ?? false,
       createdAt = readTimestamp(json['createdAt']);
 
   final int id;
@@ -39,6 +40,7 @@ class BookingListItemDto {
   final int playerCount;
   final double totalPrice;
   final bool hasResult;
+  final bool isPaid;
   final DateTime createdAt;
 }
 
@@ -59,6 +61,11 @@ class BookingDto extends BookingListItemDto {
       canCancel = json['canCancel'] as bool,
       cancelBlockedReason = json['cancelBlockedReason'] as String?,
       canReview = json['canReview'] as bool,
+      paymentStatus = json['paymentStatus'] as String?,
+      paidAt = readTimestampOrNull(json['paidAt']),
+      paidAmount = readDecimalOrNull(json['paidAmount']),
+      canPay = json['canPay'] as bool? ?? false,
+      payBlockedReason = json['payBlockedReason'] as String?,
       allowedActions = {for (final action in readStrings(json['allowedActions'])) BookingAction.parse(action)},
       blockedReasons = Map<String, String>.from(json['blockedReasons'] as Map),
       statusHistory = readList(json['statusHistory'], BookingStatusHistoryDto.fromJson),
@@ -79,6 +86,11 @@ class BookingDto extends BookingListItemDto {
   final bool canCancel;
   final String? cancelBlockedReason;
   final bool canReview;
+  final String? paymentStatus;
+  final DateTime? paidAt;
+  final double? paidAmount;
+  final bool canPay;
+  final String? payBlockedReason;
   final Set<BookingAction> allowedActions;
   final Map<String, String> blockedReasons;
   final List<BookingStatusHistoryDto> statusHistory;
@@ -86,6 +98,17 @@ class BookingDto extends BookingListItemDto {
   bool allows(BookingAction action) => allowedActions.contains(action);
 
   String? blockedReason(BookingAction action) => blockedReasons[action.value];
+}
+
+class PaymentStart {
+  PaymentStart.fromJson(Json json)
+    : paymentId = json['paymentId'] as int,
+      checkoutUrl = json['checkoutUrl'] as String,
+      returnUrl = json['returnUrl'] as String;
+
+  final int paymentId;
+  final String checkoutUrl;
+  final String returnUrl;
 }
 
 class RoomResultDto {

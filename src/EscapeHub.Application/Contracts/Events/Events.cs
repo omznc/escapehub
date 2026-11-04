@@ -16,3 +16,5 @@ public record PasswordResetRequestedEvent(int UserId, string Email, string Code,
 {
     public override string ToString() => $"{nameof(PasswordResetRequestedEvent)} {{ UserId = {UserId} }}";
 }
+
+public record PaymentCompletedEvent(int BookingId, int ClientId, decimal Amount);

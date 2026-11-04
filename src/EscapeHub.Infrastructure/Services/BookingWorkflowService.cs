@@ -126,6 +126,7 @@ public class BookingWorkflowService
         var booking = await _db.Bookings
             .Include(b => b.Schedule).ThenInclude(s => s.Room)
             .Include(b => b.RewardRedemption)
+            .Include(b => b.Payments)
             .FirstOrDefaultAsync(b => b.Id == id)
             ?? throw new NotFoundException("Booking not found.");
         _access.EnsureCanAccessBooking(booking.ClientId, booking.Schedule.Room.ManagerId);

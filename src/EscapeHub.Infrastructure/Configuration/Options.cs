@@ -58,6 +58,22 @@ public class AuthRateLimitOptions
     };
 }
 
+public class PolarOptions
+{
+    public string ApiUrl { get; init; } = string.Empty;
+    public string AccessToken { get; init; } = string.Empty;
+    public string ProductId { get; init; } = string.Empty;
+    public string SuccessUrl { get; init; } = string.Empty;
+
+    public static PolarOptions From(IConfiguration configuration) => new()
+    {
+        ApiUrl = configuration.GetRequired("POLAR_API_URL"),
+        AccessToken = configuration.GetRequired("POLAR_ACCESS_TOKEN"),
+        ProductId = configuration.GetRequired("POLAR_PRODUCT_ID"),
+        SuccessUrl = configuration.GetRequired("POLAR_SUCCESS_URL")
+    };
+}
+
 public class PasswordResetOptions
 {
     public int CodeLifetimeMinutes { get; init; }

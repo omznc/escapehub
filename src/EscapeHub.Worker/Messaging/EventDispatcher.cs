@@ -22,6 +22,7 @@ public class EventDispatcher
         EventQueues.BookingCompleted => _bookings.HandleAsync(Read<BookingCompletedEvent>(body)),
         EventQueues.ResultRecorded => _bookings.HandleAsync(Read<ResultRecordedEvent>(body)),
         EventQueues.SessionReminder => _bookings.HandleAsync(Read<SessionReminderEvent>(body)),
+        EventQueues.PaymentCompleted => _bookings.HandleAsync(Read<PaymentCompletedEvent>(body)),
         EventQueues.RewardRedeemed => _accounts.HandleAsync(Read<RewardRedeemedEvent>(body)),
         EventQueues.PasswordResetRequested => _accounts.HandleAsync(Read<PasswordResetRequestedEvent>(body)),
         _ => throw new InvalidOperationException($"No handler is registered for queue {queue}.")

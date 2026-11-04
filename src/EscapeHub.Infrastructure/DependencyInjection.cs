@@ -32,6 +32,8 @@ public static class DependencyInjection
         services.AddSingleton(JwtOptions.From(configuration));
         services.AddSingleton(FileStorageOptions.From(configuration));
         services.AddSingleton(PasswordResetOptions.From(configuration));
+        services.AddSingleton(PolarOptions.From(configuration));
+        services.AddHttpClient<PolarClient>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddSingleton<IFileStorageService, LocalFileStorage>();
 
@@ -46,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<ScheduleService>();
         services.AddScoped<BookingService>();
         services.AddScoped<BookingWorkflowService>();
+        services.AddScoped<PaymentService>();
         services.AddScoped<PromotionService>();
         services.AddScoped<LoyaltyService>();
         services.AddScoped<ReviewService>();

@@ -8,6 +8,7 @@ using EscapeHub.Application.Exceptions;
 using EscapeHub.Application.Interfaces;
 using EscapeHub.Domain.Constants;
 using EscapeHub.Domain.Entities;
+using EscapeHub.Domain.Enums;
 using EscapeHub.Infrastructure.Data;
 using EscapeHub.Infrastructure.Extensions;
 using EscapeHub.Infrastructure.Identity;
@@ -83,6 +84,7 @@ public class BookingService
             .Include(b => b.StatusHistory).ThenInclude(h => h.ToStatus)
             .Include(b => b.StatusHistory).ThenInclude(h => h.ChangedBy)
             .Include(b => b.LoyaltyTransactions)
+            .Include(b => b.Payments)
             .FirstOrDefaultAsync(b => b.Id == id)
             ?? throw new NotFoundException("Booking not found.");
 
@@ -264,6 +266,7 @@ public class BookingService
         PlayerCount = b.PlayerCount,
         TotalPrice = b.TotalPrice,
         HasResult = b.RoomResult != null,
+        IsPaid = b.Payments.Any(p => p.Status == PaymentStatus.Succeeded),
         CreatedAt = b.CreatedAt
     };
 

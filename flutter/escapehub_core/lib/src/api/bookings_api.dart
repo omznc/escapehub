@@ -56,6 +56,10 @@ class BookingsApi {
 
   Future<BookingDto> markNoShow(int id) => _client._post('/api/bookings/$id/no-show', BookingDto.fromJson);
 
+  Future<PaymentStart> startPayment(int id) => _client._post('/api/bookings/$id/payment', PaymentStart.fromJson);
+
+  Future<BookingDto> verifyPayment(int id) => _client._post('/api/bookings/$id/payment/verify', BookingDto.fromJson);
+
   Future<BookingDto> recordResult(int id, SaveRoomResultRequest result) =>
       _client._post('/api/bookings/$id/result', BookingDto.fromJson, result.toJson());
 

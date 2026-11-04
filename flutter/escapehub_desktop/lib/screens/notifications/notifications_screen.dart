@@ -18,6 +18,7 @@ const _icons = {
   NotificationType.resultRecorded: Icons.emoji_events_outlined,
   NotificationType.loyaltyPointsAwarded: Icons.loyalty_outlined,
   NotificationType.rewardRedeemed: Icons.redeem_outlined,
+  NotificationType.paymentReceived: Icons.payments_outlined,
 };
 
 class NotificationsScreen extends ConsumerStatefulWidget {

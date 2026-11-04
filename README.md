@@ -59,6 +59,10 @@ There are a few more seeded accounts, all with password `test`:
 
 The desktop app only accepts staff accounts and the mobile app only accepts clients.
 
+## Payments
+
+Payments in the mobile app run in the Polar.sh sandbox, so no real money moves. A client can pay a booking after the staff confirm it. Use the test card `4242 4242 4242 4242` with any future date and any CVC.
+
 ## Other
 
 - Recommender: [recommender-dokumentacija.md](recommender-dokumentacija.md)

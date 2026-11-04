@@ -22,6 +22,7 @@ public class BookingListItemDto
     public int PlayerCount { get; set; }
     public decimal TotalPrice { get; set; }
     public bool HasResult { get; set; }
+    public bool IsPaid { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 
@@ -42,6 +43,11 @@ public class BookingDto : BookingListItemDto
     public bool CanCancel { get; set; }
     public string? CancelBlockedReason { get; set; }
     public bool CanReview { get; set; }
+    public string? PaymentStatus { get; set; }
+    public DateTime? PaidAt { get; set; }
+    public decimal? PaidAmount { get; set; }
+    public bool CanPay { get; set; }
+    public string? PayBlockedReason { get; set; }
     public List<string> AllowedActions { get; set; } = new();
     public Dictionary<string, string> BlockedReasons { get; set; } = new();
     public List<BookingStatusHistoryDto> StatusHistory { get; set; } = new();

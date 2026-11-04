@@ -16,6 +16,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
     public DbSet<Booking> Bookings => Set<Booking>();
     public DbSet<BookingMember> BookingMembers => Set<BookingMember>();
     public DbSet<BookingStatusHistory> BookingStatusHistory => Set<BookingStatusHistory>();
+    public DbSet<Payment> Payments => Set<Payment>();
     public DbSet<RoomResult> RoomResults => Set<RoomResult>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<LoyaltyTransaction> LoyaltyTransactions => Set<LoyaltyTransaction>();

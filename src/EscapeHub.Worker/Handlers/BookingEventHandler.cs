@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using EscapeHub.Application.Contracts.Events;
 using EscapeHub.Domain.Constants;
@@ -87,6 +88,21 @@ public class BookingEventHandler
             : $"You did not escape from {booking.Schedule.Room.Name} this time";
         await _notifier.NotifyAsync(booking.Client, new NotificationMessage(NotificationType.ResultRecorded, "Your result is ready",
             $"{outcome}. Hints used: {result.HintsUsed ?? 0}."));
+    }
+
+    public async Task HandleAsync(PaymentCompletedEvent message)
+    {
+        var booking = await LoadAsync(message.BookingId);
+        var amount = message.Amount.ToString("0.00", CultureInfo.InvariantCulture);
+        var notifications = new List<(ApplicationUser, NotificationMessage)>
+        {
+            (booking.Client, new NotificationMessage(NotificationType.PaymentReceived, "Payment received",
+                $"We received your payment of {amount} KM for {BookingMapper.Describe(booking)}."))
+        };
+        var staffMessage = new NotificationMessage(NotificationType.PaymentReceived, "Payment received",
+            $"{FullName(booking.Client)} paid {amount} KM for {BookingMapper.Describe(booking)}.");
+        notifications.AddRange((await StaffForAsync(booking)).Select(staff => (staff, staffMessage)));
+        await _notifier.NotifyAsync(notifications);
     }
 
     public async Task HandleAsync(SessionReminderEvent message)

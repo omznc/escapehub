@@ -25,7 +25,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
     NavigationDestination(
       icon: Icon(Icons.event_note_outlined),
       selectedIcon: Icon(Icons.event_note),
-      label: 'My bookings',
+      label: 'Bookings',
     ),
     NavigationDestination(
       icon: Icon(Icons.card_giftcard_outlined),

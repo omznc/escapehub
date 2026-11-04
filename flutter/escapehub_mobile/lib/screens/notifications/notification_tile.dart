@@ -21,6 +21,7 @@ class NotificationTile extends StatelessWidget {
     NotificationType.resultRecorded: Icons.emoji_events_outlined,
     NotificationType.loyaltyPointsAwarded: Icons.loyalty_outlined,
     NotificationType.rewardRedeemed: Icons.card_giftcard_outlined,
+    NotificationType.paymentReceived: Icons.payments_outlined,
   };
 
   @override

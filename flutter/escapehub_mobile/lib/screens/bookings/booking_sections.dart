@@ -63,6 +63,15 @@ class PriceCard extends StatelessWidget {
           InfoRow(icon: Icons.savings_outlined, label: 'Discount', value: '- ${formatMoney(booking.discountApplied)}'),
         const Divider(),
         InfoRow(icon: Icons.payments_outlined, label: 'Total', value: formatMoney(booking.totalPrice)),
+        if (booking.isPaid)
+          InfoRow(
+            icon: Icons.check_circle_outline,
+            label: 'Paid',
+            value: [
+              if (booking.paidAmount case final amount?) formatMoney(amount),
+              if (booking.paidAt case final paidAt?) formatTimestamp(paidAt),
+            ].join(' · '),
+          ),
       ],
     );
   }

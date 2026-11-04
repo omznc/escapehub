@@ -214,6 +214,7 @@ class _BookingHeader extends StatelessWidget {
                       Text(booking.roomName, style: theme.textTheme.headlineSmall),
                       const SizedBox(width: 12),
                       StatusChip(booking.statusName, Tone.ofBooking(booking.status)),
+                      if (booking.isPaid) ...[const SizedBox(width: 8), const StatusChip('Paid', Tone.positive)],
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -304,6 +305,16 @@ class _PriceColumn extends StatelessWidget {
                 value: formatMoney(booking.discountApplied),
               ),
               InfoRow(icon: Icons.payments_outlined, label: 'Total', value: formatMoney(booking.totalPrice)),
+              InfoRow(
+                icon: Icons.check_circle_outline,
+                label: 'Payment',
+                value: booking.isPaid
+                    ? [
+                        if (booking.paidAmount case final amount?) formatMoney(amount),
+                        if (booking.paidAt case final paidAt?) formatTimestamp(paidAt),
+                      ].join(' on ')
+                    : 'Not paid',
+              ),
               InfoRow(icon: Icons.loyalty_outlined, label: 'Points earned', value: '${booking.pointsEarned}'),
             ],
           ),

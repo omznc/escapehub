@@ -61,7 +61,8 @@ enum NotificationType {
   bookingRejected('BookingRejected'),
   bookingCompleted('BookingCompleted'),
   resultRecorded('ResultRecorded'),
-  bookingNoShow('BookingNoShow');
+  bookingNoShow('BookingNoShow'),
+  paymentReceived('PaymentReceived');
 
   const NotificationType(this.value);
 

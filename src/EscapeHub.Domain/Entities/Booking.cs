@@ -25,6 +25,7 @@ public class Booking : BaseEntity
     public RewardRedemption? RewardRedemption { get; set; }
     public ICollection<BookingMember> BookingMembers { get; set; } = new List<BookingMember>();
     public ICollection<BookingStatusHistory> StatusHistory { get; set; } = new List<BookingStatusHistory>();
+    public ICollection<Payment> Payments { get; set; } = new List<Payment>();
     public RoomResult? RoomResult { get; set; }
     public ICollection<LoyaltyTransaction> LoyaltyTransactions { get; set; } = new List<LoyaltyTransaction>();
 }

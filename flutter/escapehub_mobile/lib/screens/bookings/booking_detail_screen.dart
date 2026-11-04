@@ -9,6 +9,7 @@ import '../../widgets/section_header.dart';
 import 'booking_detail_provider.dart';
 import 'booking_sections.dart';
 import 'cancel_booking_dialog.dart';
+import 'payment_screen.dart';
 import 'review_section.dart';
 
 class BookingDetailScreen extends ConsumerWidget {
@@ -32,7 +33,7 @@ class BookingDetailScreen extends ConsumerWidget {
         error: (error, _) => ErrorView(error: error, onRetry: () => ref.invalidate(bookingDetailProvider(bookingId))),
         data: (data) => _BookingBody(booking: data.$1, review: data.$2),
       ),
-      bottomNavigationBar: booking == null ? null : _CancelBar(booking: booking),
+      bottomNavigationBar: booking == null ? null : _ActionBar(booking: booking),
     );
   }
 }
@@ -103,8 +104,8 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _CancelBar extends ConsumerWidget {
-  const _CancelBar({required this.booking});
+class _ActionBar extends ConsumerWidget {
+  const _ActionBar({required this.booking});
 
   final BookingDto booking;
 
@@ -127,10 +128,36 @@ class _CancelBar extends ConsumerWidget {
     }
   }
 
+  Future<void> _pay(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final api = ref.read(apiClientProvider);
+    final refresh = ref.bookingsRefresh();
+    final confirmed = await showConfirmDialog(
+      context,
+      title: 'Pay for booking',
+      message: 'Pay ${formatMoney(booking.totalPrice)} for ${booking.roomName} on ${formatDay(booking.date)}?',
+      confirmLabel: 'Pay',
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      final payment = await api.bookings.startPayment(booking.id);
+      if (!context.mounted) return;
+      await PaymentScreen.open(context, payment);
+      final updated = await api.bookings.verifyPayment(booking.id);
+      refresh();
+      messenger.showSnackBar(
+        SnackBar(content: Text(updated.isPaid ? 'Payment received' : 'Payment is not finished yet')),
+      );
+    } on ApiException catch (error) {
+      if (context.mounted) showErrorSnackBar(context, error);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (!_isActive) return const SizedBox.shrink();
     final blockedReason = booking.cancelBlockedReason;
+    final payReason = booking.isPaid || booking.canPay ? null : booking.payBlockedReason;
     final colors = Theme.of(context).colorScheme;
     return SafeArea(
       child: Padding(
@@ -138,16 +165,35 @@ class _CancelBar extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (!booking.canCancel && blockedReason != null)
+            for (final reason in [if (!booking.canCancel) blockedReason, payReason].nonNulls)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: Text(blockedReason, style: TextStyle(color: colors.onSurfaceVariant)),
+                child: Text(reason, style: TextStyle(color: colors.onSurfaceVariant)),
               ),
-            OutlinedButton.icon(
-              style: OutlinedButton.styleFrom(foregroundColor: colors.error, minimumSize: const Size.fromHeight(48)),
-              onPressed: booking.canCancel ? () => _cancel(context, ref) : null,
-              icon: const Icon(Icons.event_busy_outlined),
-              label: const Text('Cancel booking'),
+            Row(
+              spacing: 12,
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: colors.error,
+                      minimumSize: const Size.fromHeight(48),
+                    ),
+                    onPressed: booking.canCancel ? () => _cancel(context, ref) : null,
+                    icon: const Icon(Icons.event_busy_outlined),
+                    label: const Text('Cancel booking'),
+                  ),
+                ),
+                if (booking.canPay && !booking.isPaid)
+                  Expanded(
+                    child: FilledButton.icon(
+                      style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+                      onPressed: () => _pay(context, ref),
+                      icon: const Icon(Icons.payments_outlined),
+                      label: Text('Pay ${formatMoney(booking.totalPrice)}'),
+                    ),
+                  ),
+              ],
             ),
           ],
         ),

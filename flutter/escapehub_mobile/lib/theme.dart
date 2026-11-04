@@ -16,6 +16,7 @@ ThemeData buildTheme() {
       foregroundColor: colors.onSurface,
       scrolledUnderElevation: 0,
       centerTitle: false,
+      actionsPadding: const EdgeInsets.only(right: 8),
     ),
     cardTheme: CardThemeData(elevation: 0, color: colors.surfaceContainerLow, shape: shape, margin: EdgeInsets.zero),
     inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder(), errorMaxLines: 3),
