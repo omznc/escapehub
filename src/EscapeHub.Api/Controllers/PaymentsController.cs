@@ -21,14 +21,4 @@ public class PaymentsController : ControllerBase
 
     [HttpPost("api/bookings/{id:int}/payment/verify")]
     public Task<BookingDto> Verify(int id) => _payments.VerifyAsync(id);
-
-    [HttpGet("api/payments/return")]
-    [AllowAnonymous]
-    public async Task<ContentResult> Return([FromQuery(Name = "checkout_id")] string checkoutId)
-    {
-        var message = await _payments.VerifyCheckoutAsync(checkoutId)
-            ? "Payment received. You can go back to the EscapeHub app."
-            : "Payment is processing. You can go back to the EscapeHub app.";
-        return Content($"<!DOCTYPE html><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><p style=\"font-size:1.5em;padding:1em\">{message}</p>", "text/html");
-    }
 }

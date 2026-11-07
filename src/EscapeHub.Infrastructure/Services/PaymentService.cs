@@ -65,15 +65,6 @@ public class PaymentService
         return await _bookings.GetByIdAsync(bookingId);
     }
 
-    public async Task<bool> VerifyCheckoutAsync(string checkoutId)
-    {
-        var payment = await _db.Payments.FirstOrDefaultAsync(p => p.CheckoutId == checkoutId)
-            ?? throw new NotFoundException("Payment not found.");
-        if (payment.Status == PaymentStatus.Open)
-            await RefreshAsync(payment);
-        return payment.Status == PaymentStatus.Succeeded;
-    }
-
     public async Task RefundAsync(Booking booking)
     {
         if (booking.Payments.FirstOrDefault(p => p.Status == PaymentStatus.Succeeded) is not { } payment) return;
