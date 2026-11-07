@@ -22,7 +22,7 @@ class LoyaltySummaryCard extends StatelessWidget {
           child: Icon(Icons.loyalty_outlined, color: theme.colorScheme.onSecondaryContainer),
         ),
         title: Text('${formatPoints(balance.balance)} available'),
-        subtitle: Text('Earned ${balance.earnedTotal} · Spent ${balance.redeemedTotal}'),
+        subtitle: Text('Earned ${balance.earnedTotal} - Spent ${balance.redeemedTotal}'),
         trailing: const Icon(Icons.chevron_right),
       ),
     );

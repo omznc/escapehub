@@ -73,7 +73,7 @@ class DiscountFields extends StatelessWidget {
         for (final voucher in vouchers)
           DropdownMenuItem(
             value: voucher.id,
-            child: Text('${voucher.rewardName} · ${voucher.code}', overflow: TextOverflow.ellipsis),
+            child: Text('${voucher.rewardName} -${voucher.code}', overflow: TextOverflow.ellipsis),
           ),
       ],
       validator: serverErrors.validator<int?>('redemptionId'),

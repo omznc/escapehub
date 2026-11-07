@@ -67,7 +67,7 @@ class _BalanceCard extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(formatPoints(balance.balance), style: theme.textTheme.headlineSmall),
-                      Text('Earned ${balance.earnedTotal} · Spent ${balance.redeemedTotal}'),
+                      Text('Earned ${balance.earnedTotal} - Spent ${balance.redeemedTotal}'),
                     ],
                   ),
                 ),

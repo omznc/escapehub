@@ -13,5 +13,7 @@ To use a different API address, add `--dart-define=API_BASE_URL=<url>`.
 
 ## Test accounts
 
-- Administrator: `desktop` / `test`
-- Room manager: `roommanager` / `test`
+All accounts use the password `test`.
+
+- Administrator: `desktop`, `administrator`, `zavala`
+- Room manager: `roommanager`, `ikora`, `eris`

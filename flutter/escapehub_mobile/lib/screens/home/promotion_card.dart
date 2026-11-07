@@ -33,7 +33,7 @@ class PromotionCard extends StatelessWidget {
             if (promotion.description.isNotEmpty) ...[const SizedBox(height: 6), Text(promotion.description)],
             const SizedBox(height: 6),
             Text(
-              'Valid until ${formatDay(promotion.endDate)} · $_rooms',
+              'Valid until ${formatDay(promotion.endDate)} - $_rooms',
               style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
             ),
           ],

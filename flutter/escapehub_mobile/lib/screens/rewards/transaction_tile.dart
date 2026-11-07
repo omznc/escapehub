@@ -13,7 +13,7 @@ class TransactionTile extends StatelessWidget {
     final theme = Theme.of(context);
     final positive = transaction.points >= 0;
     final title = transaction.description ?? transaction.type.value;
-    final subtitle = [?transaction.roomName, formatTimestamp(transaction.createdAt)].join(' · ');
+    final subtitle = [?transaction.roomName, formatTimestamp(transaction.createdAt)].join(' - ');
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(

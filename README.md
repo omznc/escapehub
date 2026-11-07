@@ -52,12 +52,16 @@ On a physical phone use your computer's IP instead of `10.0.2.2`. Pass `API_BASE
 | Administrator | administrator | test |
 | RoomManager | roommanager | test |
 | Client | client | test |
-
-There are a few more seeded accounts, all with password `test`:
-
-- Administrator: `zavala`
-- RoomManager: `ikora`, `eris`
-- Client: `cayde6`, `alanwake`, `sagaanderson`, `drifter`, `osiris`, `saint14`, `tor`
+| Administrator | zavala | test |
+| RoomManager | ikora | test |
+| RoomManager | eris | test |
+| Client | cayde6 | test |
+| Client | alanwake | test |
+| Client | sagaanderson | test |
+| Client | drifter | test |
+| Client | osiris | test |
+| Client | saint14 | test |
+| Client | tor | test |
 
 The desktop app only accepts staff accounts and the mobile app only accepts clients.
 

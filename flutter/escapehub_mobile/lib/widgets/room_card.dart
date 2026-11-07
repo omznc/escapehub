@@ -35,7 +35,7 @@ class RoomCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(room.name, style: theme.textTheme.titleMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text('${room.themeName} · ${room.difficultyName}', style: theme.textTheme.bodySmall),
+                    Text('${room.themeName} -${room.difficultyName}', style: theme.textTheme.bodySmall),
                     const SizedBox(height: 6),
                     RatingSummary(rating: room.averageRating, count: room.reviewCount),
                     const SizedBox(height: 6),

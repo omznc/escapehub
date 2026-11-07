@@ -17,8 +17,16 @@ flutter build apk --release --dart-define=API_BASE_URL=http://10.0.2.2:5000
 
 The APK is in `build/app/outputs/flutter-apk/app-release.apk`.
 
-## Test account
+## Test accounts
 
 | Username | Password |
 | --- | --- |
 | mobile | test |
+| client | test |
+| cayde6 | test |
+| alanwake | test |
+| sagaanderson | test |
+| drifter | test |
+| osiris | test |
+| saint14 | test |
+| tor | test |

@@ -62,7 +62,7 @@ class RewardCard extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              '${reward.rewardTypeName} · ${formatDiscount(isPercentage: reward.isPercentage, value: reward.value)}',
+              '${reward.rewardTypeName} -${formatDiscount(isPercentage: reward.isPercentage, value: reward.value)}',
               style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary),
             ),
             if (reward.description.isNotEmpty) ...[const SizedBox(height: 6), Text(reward.description)],

@@ -52,7 +52,7 @@ class PriceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final voucher = [?booking.rewardName, ?booking.voucherCode].join(' · ');
+    final voucher = [?booking.rewardName, ?booking.voucherCode].join(' - ');
     return _SectionCard(
       children: [
         InfoRow(icon: Icons.receipt_long_outlined, label: 'Subtotal', value: formatMoney(booking.subtotal)),
@@ -98,7 +98,7 @@ class _PaymentRow extends StatelessWidget {
       value: [
         if (amount case final amount?) formatMoney(amount),
         if (date case final date?) formatTimestamp(date),
-      ].join(' · '),
+      ].join(' - '),
     );
   }
 }
@@ -153,7 +153,7 @@ class _HistoryEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final details = [formatTimestamp(entry.changedAt), ?entry.changedByName].join(' · ');
+    final details = [formatTimestamp(entry.changedAt), ?entry.changedByName].join(' - ');
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,

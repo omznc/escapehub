@@ -111,7 +111,7 @@ class _RecommendationStrip extends StatelessWidget {
           RoomTile(
             name: item.name,
             imageUrl: item.imageUrl,
-            subtitle: '${item.themeName} · ${item.difficultyName}',
+            subtitle: '${item.themeName} -${item.difficultyName}',
             onTap: () => RoomDetailScreen.open(context, item.roomId),
             footer: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +148,7 @@ class _FeaturedStrip extends StatelessWidget {
           RoomTile(
             name: room.name,
             imageUrl: room.imageUrl,
-            subtitle: '${room.themeName} · ${room.difficultyName}',
+            subtitle: '${room.themeName} -${room.difficultyName}',
             onTap: () => RoomDetailScreen.open(context, room.id),
             footer: RatingSummary(rating: room.averageRating, count: room.reviewCount),
           ),
